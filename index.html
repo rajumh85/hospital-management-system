@@ -2,66 +2,107 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Hospital Bed Availability</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hospital Availability System</title>
 
-  <!-- ✅ RELATIVE PATH -->
-  <link rel="stylesheet" href="./css/style.css" />
+  <!-- MAIN CSS -->
+  <link rel="stylesheet" href="css/style.css" />
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <!-- Firebase SDKs -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+    import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCix2LJGtOHoqGefym3gbEcijOYxRPr2tc",
+      authDomain: "hospital-management-c7f9e.firebaseapp.com",
+      projectId: "hospital-management-c7f9e",
+      storageBucket: "hospital-management-c7f9e.appspot.com",
+      messagingSenderId: "110644104032",
+      appId: "1:110644104032:web:9900751fc9f1c04d6d2c05"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // REAL-TIME BED DATA
+    const bedRef = doc(db, "beds", "current");
+
+    onSnapshot(bedRef, (snap) => {
+      if (!snap.exists()) return;
+
+      const data = snap.data();
+
+      document.getElementById("icuCount").innerText = data.icu ?? 0;
+      document.getElementById("generalCount").innerText = data.general ?? 0;
+      document.getElementById("oxygenCount").innerText = data.oxygen ?? 0;
+
+      if (data.updatedAt) {
+        document.getElementById("updatedAt").innerText =
+          data.updatedAt.toDate().toLocaleString();
+      }
+    });
+  </script>
 </head>
+
 <body>
 
   <!-- TOP BAR -->
   <div class="topbar">
     <div class="logo">🏥 Hospital Availability</div>
+    <a href="login.html" class="logout-btn">Staff Login</a>
   </div>
 
-  <!-- MAIN -->
-  <main class="main">
+  <!-- MAIN CONTENT -->
+  <div class="main">
 
+    <!-- HERO -->
     <div class="hero">
       <h1>Current Bed Availability</h1>
       <p>Live hospital bed status updated in real-time</p>
     </div>
 
+    <!-- NOTICE -->
     <div class="notice">
-      ⚠️ Availability updates in real-time. Please contact hospital before arrival.
+      ⚠️ Availability updates in real-time. Please contact the hospital before arrival.
     </div>
 
-    <!-- GRID -->
+    <!-- BED GRID -->
     <div class="grid">
+
       <div class="card">
         <h3>ICU Beds</h3>
-        <div class="number" id="icuBeds">0</div>
+        <div class="number" id="icuCount">0</div>
         <div class="status green">Available</div>
       </div>
 
       <div class="card">
         <h3>General Beds</h3>
-        <div class="number" id="generalBeds">0</div>
+        <div class="number" id="generalCount">0</div>
         <div class="status green">Available</div>
       </div>
 
       <div class="card">
         <h3>Oxygen Beds</h3>
-        <div class="number" id="oxygenBeds">0</div>
+        <div class="number" id="oxygenCount">0</div>
         <div class="status green">Available</div>
       </div>
+
     </div>
 
-    <div class="update-time" id="lastUpdated">Last Updated: --</div>
+    <!-- UPDATE TIME -->
+    <div class="update-time">
+      Last Updated: <span id="updatedAt">--</span>
+    </div>
 
-  </main>
+  </div>
 
-  <footer class="footer">
-    📞 Emergency: 108 | ✉️ support@hospital.com <br>
+  <!-- FOOTER -->
+  <div class="footer">
+    📞 Emergency: 108 &nbsp;|&nbsp;
+    ✉️ support@hospital.com <br />
     © 2026 Hospital Availability System
-  </footer>
+  </div>
 
-  <!-- JS -->
-  <script src="./js/firebase.js"></script>
-  <script src="./js/beds.js"></script>
 </body>
 </html>
