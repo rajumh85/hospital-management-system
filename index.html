@@ -1,110 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Hospital Availability & Services Tracker</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Correct CSS path -->
-  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- CSS -->
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
 
-  <!-- ================= TOP BAR ================= -->
-  <header class="topbar">
-    <div class="logo">🏥 Hospital Official Website</div>
-    <a href="login.html" class="login-btn">Staff / Admin Login</a>
-  </header>
+<!-- ================= TOP BAR ================= -->
+<header class="topbar">
+  <div class="logo">🏥 Hospital Official Website</div>
+  <a href="login.html" class="login-btn">Staff / Admin Login</a>
+</header>
 
-  <!-- ================= MAIN ================= -->
-  <main class="main">
+<!-- ================= MAIN ================= -->
+<main class="main">
 
-    <!-- HERO SECTION -->
-    <section class="hero">
-      <h1>Welcome to the Hospital’s Official Website</h1>
-      <p>
-        Explore our facilities, check real-time availability, and find the right care without delay.
-      </p>
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Hospital Availability & Services Tracker</h1>
+    <p>
+      View real-time bed availability, doctors, medical store services,
+      and emergency support — all in one place.
+    </p>
 
-      <!-- ACTION BUTTONS -->
-      <div class="actions">
-        <a href="public/dashboard.html" class="btn primary">
-          Explore Facilities
-        </a>
-        <a href="#contact" class="btn secondary">
-          Contact Us
-        </a>
-      </div>
-    </section>
+    <div class="actions" style="margin-top:24px;">
+      <a href="public/dashboard.html" class="btn primary">
+        Explore Facilities
+      </a>
+      <a href="#contact" class="btn primary" style="margin-left:12px;">
+        Contact Us
+      </a>
+    </div>
+  </section>
 
-    <!-- STATS SECTION -->
-    <section class="stats">
-      <div class="stat-box">
-        <h2>50,000+</h2>
-        <p>Patients Treated</p>
-      </div>
-      <div class="stat-box">
-        <h2>120+</h2>
-        <p>Qualified Doctors</p>
-      </div>
-      <div class="stat-box">
-        <h2>24×7</h2>
-        <p>Emergency Service</p>
-      </div>
-      <div class="stat-box">
-        <h2>15+</h2>
-        <p>Years of Trust</p>
-      </div>
-    </section>
+  <!-- STATS -->
+  <section class="stats" style="margin-bottom:48px;">
+    <div class="stat-box">
+      <h2>50,000+</h2>
+      <p>Patients Treated</p>
+    </div>
+    <div class="stat-box">
+      <h2>120+</h2>
+      <p>Qualified Doctors</p>
+    </div>
+    <div class="stat-box">
+      <h2>24×7</h2>
+      <p>Emergency Service</p>
+    </div>
+    <div class="stat-box">
+      <h2>15+</h2>
+      <p>Years of Trust</p>
+    </div>
+  </section>
 
-    <!-- FEATURES -->
-    <section class="features">
-      <div class="box">
-        <h3>🛏️ Bed Availability</h3>
-        <p>ICU, general and oxygen beds updated in real time.</p>
-      </div>
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="box">
+      <h3>🛏️ Bed Availability</h3>
+      <p>Check ICU, General, and Oxygen bed availability before visiting.</p>
+      <a href="beds.html" class="btn primary">Check Beds</a>
+    </div>
 
-      <div class="box">
-        <h3>👨‍⚕️ Doctors</h3>
-        <p>View available doctors and specializations.</p>
-      </div>
+    <div class="box">
+      <h3>👨‍⚕️ Doctors</h3>
+      <p>View available doctors, departments, and contact details.</p>
+      <a href="doctors.html" class="btn primary">View Doctors</a>
+    </div>
 
-      <div class="box">
-        <h3>💊 Medical Store</h3>
-        <p>Check essential medicines and emergency supplies.</p>
-      </div>
+    <div class="box">
+      <h3>💊 Medical Store</h3>
+      <p>Check availability of essential medicines and supplies.</p>
+      <a href="medical.html" class="btn primary">Medical Store</a>
+    </div>
 
-      <div class="box">
-        <h3>🚑 Emergency</h3>
-        <p>Quick access to emergency services and contacts.</p>
-      </div>
-    </section>
+    <div class="box">
+      <h3>🚑 Emergency</h3>
+      <p>Emergency services, ambulance support, and urgent care.</p>
+      <a href="#contact" class="btn primary">Emergency Info</a>
+    </div>
+  </section>
 
-    <!-- WHY CHOOSE US -->
-    <section class="why">
-      <h2>Why Choose Our Hospital?</h2>
-      <ul>
-        <li>✔ Government-recognized healthcare facility</li>
-        <li>✔ Real-time availability system</li>
-        <li>✔ Experienced doctors and trained staff</li>
-        <li>✔ Transparent and reliable information</li>
-      </ul>
-    </section>
+  <!-- WHY US -->
+  <section class="why" style="margin-top:60px;">
+    <h2 style="text-align:center;margin-bottom:16px;">
+      Why Choose Our Hospital?
+    </h2>
+    <ul style="max-width:700px;margin:auto;line-height:1.8;">
+      <li>✔ Government-recognized healthcare facility</li>
+      <li>✔ Live real-time availability system</li>
+      <li>✔ Experienced doctors and trained staff</li>
+      <li>✔ Transparent and reliable information</li>
+    </ul>
+  </section>
 
-    <!-- CONTACT SECTION -->
-    <section class="contact" id="contact">
-      <h3>Contact & Support</h3>
-      <p><strong>Emergency:</strong> 108</p>
-      <p><strong>Helpdesk:</strong> +91 98765 43210</p>
-      <p><strong>Email:</strong> support@hospital.com</p>
-    </section>
+  <!-- CONTACT -->
+  <section class="contact" id="contact" style="margin-top:60px;">
+    <h3>Contact & Support</h3>
+    <p><strong>🚨 Emergency:</strong> 108</p>
+    <p><strong>📞 Helpdesk:</strong> +91 98765 43210</p>
+    <p><strong>📧 Email:</strong> support@hospital.com</p>
+  </section>
 
-  </main>
+</main>
 
-  <!-- ================= FOOTER ================= -->
-  <footer class="footer">
-    © 2026 Hospital Availability & Services Tracker
-  </footer>
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  © 2026 Hospital Availability & Services Tracker
+</footer>
 
 </body>
 </html>
