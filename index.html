@@ -1,108 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hospital Availability System</title>
+  <meta charset="UTF-8">
+  <title>Hospital Availability & Services Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- MAIN CSS -->
-  <link rel="stylesheet" href="css/style.css" />
-
-  <!-- Firebase SDKs -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
-    import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCix2LJGtOHoqGefym3gbEcijOYxRPr2tc",
-      authDomain: "hospital-management-c7f9e.firebaseapp.com",
-      projectId: "hospital-management-c7f9e",
-      storageBucket: "hospital-management-c7f9e.appspot.com",
-      messagingSenderId: "110644104032",
-      appId: "1:110644104032:web:9900751fc9f1c04d6d2c05"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    // REAL-TIME BED DATA
-    const bedRef = doc(db, "beds", "current");
-
-    onSnapshot(bedRef, (snap) => {
-      if (!snap.exists()) return;
-
-      const data = snap.data();
-
-      document.getElementById("icuCount").innerText = data.icu ?? 0;
-      document.getElementById("generalCount").innerText = data.general ?? 0;
-      document.getElementById("oxygenCount").innerText = data.oxygen ?? 0;
-
-      if (data.updatedAt) {
-        document.getElementById("updatedAt").innerText =
-          data.updatedAt.toDate().toLocaleString();
-      }
-    });
-  </script>
+  <!-- Correct CSS path -->
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
-
 <body>
 
-  <!-- TOP BAR -->
-  <div class="topbar">
-    <div class="logo">🏥 Hospital Availability</div>
-    <a href="login.html" class="logout-btn">Staff Login</a>
-  </div>
+  <!-- ================= TOP BAR ================= -->
+  <header class="topbar">
+    <div class="logo">🏥 Hospital Official Website</div>
+    <a href="login.html" class="login-btn">Staff / Admin Login</a>
+  </header>
 
-  <!-- MAIN CONTENT -->
-  <div class="main">
+  <!-- ================= MAIN ================= -->
+  <main class="main">
 
-    <!-- HERO -->
-    <div class="hero">
-      <h1>Current Bed Availability</h1>
-      <p>Live hospital bed status updated in real-time</p>
-    </div>
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <h1>Welcome to the Hospital’s Official Website</h1>
+      <p>
+        Explore our facilities, check real-time availability, and find the right care without delay.
+      </p>
 
-    <!-- NOTICE -->
-    <div class="notice">
-      ⚠️ Availability updates in real-time. Please contact the hospital before arrival.
-    </div>
+      <!-- ACTION BUTTONS -->
+      <div class="actions">
+        <a href="public/dashboard.html" class="btn primary">
+          Explore Facilities
+        </a>
+        <a href="#contact" class="btn secondary">
+          Contact Us
+        </a>
+      </div>
+    </section>
 
-    <!-- BED GRID -->
-    <div class="grid">
+    <!-- STATS SECTION -->
+    <section class="stats">
+      <div class="stat-box">
+        <h2>50,000+</h2>
+        <p>Patients Treated</p>
+      </div>
+      <div class="stat-box">
+        <h2>120+</h2>
+        <p>Qualified Doctors</p>
+      </div>
+      <div class="stat-box">
+        <h2>24×7</h2>
+        <p>Emergency Service</p>
+      </div>
+      <div class="stat-box">
+        <h2>15+</h2>
+        <p>Years of Trust</p>
+      </div>
+    </section>
 
-      <div class="card">
-        <h3>ICU Beds</h3>
-        <div class="number" id="icuCount">0</div>
-        <div class="status green">Available</div>
+    <!-- FEATURES -->
+    <section class="features">
+      <div class="box">
+        <h3>🛏️ Bed Availability</h3>
+        <p>ICU, general and oxygen beds updated in real time.</p>
       </div>
 
-      <div class="card">
-        <h3>General Beds</h3>
-        <div class="number" id="generalCount">0</div>
-        <div class="status green">Available</div>
+      <div class="box">
+        <h3>👨‍⚕️ Doctors</h3>
+        <p>View available doctors and specializations.</p>
       </div>
 
-      <div class="card">
-        <h3>Oxygen Beds</h3>
-        <div class="number" id="oxygenCount">0</div>
-        <div class="status green">Available</div>
+      <div class="box">
+        <h3>💊 Medical Store</h3>
+        <p>Check essential medicines and emergency supplies.</p>
       </div>
 
-    </div>
+      <div class="box">
+        <h3>🚑 Emergency</h3>
+        <p>Quick access to emergency services and contacts.</p>
+      </div>
+    </section>
 
-    <!-- UPDATE TIME -->
-    <div class="update-time">
-      Last Updated: <span id="updatedAt">--</span>
-    </div>
+    <!-- WHY CHOOSE US -->
+    <section class="why">
+      <h2>Why Choose Our Hospital?</h2>
+      <ul>
+        <li>✔ Government-recognized healthcare facility</li>
+        <li>✔ Real-time availability system</li>
+        <li>✔ Experienced doctors and trained staff</li>
+        <li>✔ Transparent and reliable information</li>
+      </ul>
+    </section>
 
-  </div>
+    <!-- CONTACT SECTION -->
+    <section class="contact" id="contact">
+      <h3>Contact & Support</h3>
+      <p><strong>Emergency:</strong> 108</p>
+      <p><strong>Helpdesk:</strong> +91 98765 43210</p>
+      <p><strong>Email:</strong> support@hospital.com</p>
+    </section>
 
-  <!-- FOOTER -->
-  <div class="footer">
-    📞 Emergency: 108 &nbsp;|&nbsp;
-    ✉️ support@hospital.com <br />
-    © 2026 Hospital Availability System
-  </div>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    © 2026 Hospital Availability & Services Tracker
+  </footer>
 
 </body>
 </html>
