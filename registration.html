@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register – Hospital System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo">🏥 Hospital Registration</div>
+  <a href="login.html" class="login-btn">Login</a>
+</header>
+
+<main class="main">
+
+  <section class="hero">
+    <h1>Create Account</h1>
+    <p>Register as hospital staff or administrator</p>
+  </section>
+
+  <section class="features">
+
+    <div class="box">
+      <h3>📝 Registration Form</h3>
+
+      <input type="text" id="name" placeholder="Full Name">
+
+      <select id="role">
+        <option value="admin">Admin</option>
+      </select>
+
+      <input type="email" id="email" placeholder="Email address">
+      <input type="password" id="password" placeholder="Password (min 6 chars)">
+
+      <button class="btn primary" onclick="register()">Register</button>
+
+      <p class="small-text">
+        Already registered?
+        <a href="login.html">Login here</a>
+      </p>
+    </div>
+
+    <div class="box">
+      <h3>ℹ️ Important Notes</h3>
+      <p>• Admin accounts require approval</p>
+      <p>• Staff can update beds, doctors, medical data</p>
+      <p>• All actions are logged</p>
+      <p>• Unauthorized access is prohibited</p>
+    </div>
+
+  </section>
+
+</main>
+
+<footer class="footer">© 2026 Hospital System</footer>
+
+<script type="module">
+  import { auth, db } from "./firebase/firebase.js";
+  import { createUserWithEmailAndPassword } from
+    "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+  import { doc, setDoc } from
+    "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+  window.register = async function () {
+    const name = nameInput.value;
+    const email = emailInput.value;
+    const password = passwordInput.value;
+    const role = roleSelect.value;
+
+    if (!name || !email || !password || !role) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+
+      // Save user profile & role
+      await setDoc(doc(db, "users", cred.user.uid), {
+        name,
+        email,
+        role,
+        createdAt: new Date()
+      });
+
+      alert("Registration successful! Please login.");
+      window.location.href = "login.html";
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const nameInput = document.getElementById("name");
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+  const roleSelect = document.getElementById("role");
+</script>
+
+</body>
+</html>

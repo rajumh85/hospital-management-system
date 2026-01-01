@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: #f4f7fb;
+    }
+
+    /* Top Bar */
+    .topbar {
+      background: linear-gradient(90deg, #1fa2ff, #12d8fa);
+      color: white;
+      padding: 16px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topbar h2 {
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .logout {
+      background: white;
+      color: #1fa2ff;
+      padding: 8px 18px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* Layout */
+    .container {
+      padding: 30px;
+    }
+
+    .hero {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+      margin-bottom: 30px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 32px;
+      color: #0f172a;
+    }
+
+    .hero p {
+      margin-top: 10px;
+      color: #64748b;
+      font-size: 16px;
+    }
+
+    /* Cards */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 18px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      color: #0f172a;
+    }
+
+    .card p {
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 18px;
+      padding: 12px;
+      background: linear-gradient(90deg, #ff7a18, #ff9f43);
+      border: none;
+      color: white;
+      border-radius: 25px;
+      font-size: 15px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    #msg {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    /* Info cards */
+    .info {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #475569;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <h2>🛡️ Admin Dashboard</h2>
+    <a href="../login.html" class="logout">Logout</a>
+  </div>
+
+  <div class="container">
+
+    <!-- HERO -->
+    <div class="hero">
+      <h1>Admin Control Panel</h1>
+      <p>Create staff accounts and manage hospital access securely.</p>
+    </div>
+
+    <!-- GRID -->
+    <div class="grid">
+
+      <!-- CREATE STAFF -->
+      <div class="card">
+        <h3>👤 Create Staff Account</h3>
+        <p>Only admins can create staff login credentials.</p>
+
+        <form id="createStaffForm">
+          <input
+            type="email"
+            id="staffEmail"
+            placeholder="Staff Email Address"
+            required
+          />
+
+          <input
+            type="password"
+            id="staffPassword"
+            placeholder="Temporary Password"
+            required
+          />
+
+          <button type="submit">Create Staff</button>
+        </form>
+
+        <div id="msg"></div>
+      </div>
+
+      <!-- INFO / STATS -->
+      <div class="card">
+        <h3>📊 System Info</h3>
+        <div class="info">
+          <span>Authentication</span>
+          <strong>Firebase Auth</strong>
+        </div>
+        <div class="info">
+          <span>Database</span>
+          <strong>Cloud Firestore</strong>
+        </div>
+        <div class="info">
+          <span>Security</span>
+          <strong>Role Based</strong>
+        </div>
+        <div class="info">
+          <span>Status</span>
+          <strong style="color:green;">Active</strong>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 🔥 FIREBASE (DO NOT CHANGE LOGIC) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+    import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCix2LJGtOHoqGefym3gbEcijOYxRPr2tc",
+      authDomain: "hospital-management-c7f9e.firebaseapp.com",
+      projectId: "hospital-management-c7f9e",
+      storageBucket: "hospital-management-c7f9e.appspot.com",
+      messagingSenderId: "110644104032",
+      appId: "1:110644104032:web:9900751fc9f1c04d6d2c05"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const form = document.getElementById("createStaffForm");
+    const msg = document.getElementById("msg");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = staffEmail.value.trim();
+      const password = staffPassword.value.trim();
+
+      msg.style.color = "#555";
+      msg.innerText = "Creating staff account...";
+
+      try {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
+        const uid = userCredential.user.uid;
+
+        await setDoc(doc(db, "users", uid), {
+          email: email,
+          role: "staff",
+          createdAt: new Date()
+        });
+
+        msg.style.color = "green";
+        msg.innerText = "✅ Staff account created successfully";
+        form.reset();
+
+      } catch (error) {
+        msg.style.color = "red";
+        msg.innerText =
+          error.code === "auth/email-already-in-use"
+            ? "❌ Email already exists"
+            : error.code === "auth/weak-password"
+            ? "❌ Password must be at least 6 characters"
+            : "❌ " + error.message;
+      }
+    });
+  </script>
+
+</body>
+</html>

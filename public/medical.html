@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Medical Store</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="topbar">
+  <h2>💊 Medical Store Availability</h2>
+  <span class="live-badge">● LIVE</span>
+</header>
+
+<!-- NOTICE -->
+<div class="notice">
+  Medicine availability reflects current hospital inventory.
+</div>
+
+<!-- MEDICAL GRID -->
+<section class="grid" id="medicalList"></section>
+
+<!-- FOOTER -->
+<footer class="main-footer">
+  <div class="footer-content">
+    <div class="footer-item">📞 Emergency: 108</div>
+    <div class="footer-item">📧 support@hospital.com</div>
+    <div class="footer-item">© 2026 Hospital Availability System</div>
+  </div>
+</footer>
+
+<!-- FIREBASE -->
+<script type="module">
+  import { db } from "../firebase/firebase.js";
+  import { collection, onSnapshot }
+    from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+  const container = document.getElementById("medicalList");
+
+  onSnapshot(collection(db, "medicalStore"), (snapshot) => {
+    container.innerHTML = "";
+
+    snapshot.forEach(doc => {
+      const m = doc.data();
+      const statusClass = m.status === "In Stock" ? "green" : "red";
+
+      container.innerHTML += `
+        <div class="card">
+          <h3>${m.medicine}</h3>
+          <p><strong>Quantity:</strong> ${m.quantity}</p>
+          <p class="status ${statusClass}">${m.status}</p>
+        </div>
+      `;
+    });
+
+    if (snapshot.empty) {
+      container.innerHTML = "<p style='padding:20px'>No medicines listed</p>";
+    }
+  });
+</script>
+
+</body>
+</html>

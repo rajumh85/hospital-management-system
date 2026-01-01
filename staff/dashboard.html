@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Staff Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <div class="logo">🏥 Staff Dashboard</div>
+  <button class="login-btn" onclick="logout()">Logout</button>
+</header>
+
+<main class="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Manage Hospital Data</h1>
+    <p>Update beds, doctors availability, and medical store status.</p>
+  </section>
+
+  <!-- DASHBOARD CARDS -->
+  <section class="features">
+
+    <!-- BED UPDATE -->
+    <div class="box">
+      <h3>🛏️ Update Bed Availability</h3>
+
+      <label>ICU Beds</label>
+      <input type="number" id="icu" placeholder="e.g. 5">
+
+      <label>General Beds</label>
+      <input type="number" id="general" placeholder="e.g. 20">
+
+      <label>Oxygen Beds</label>
+      <input type="number" id="oxygen" placeholder="e.g. 10">
+
+      <button class="btn primary" onclick="updateBeds()">Update</button>
+    </div>
+
+    <!-- DOCTORS -->
+    <div class="box">
+      <h3>👨‍⚕️ Doctor Availability</h3>
+
+      <label>Doctor Name</label>
+      <input type="text" id="doctorName" placeholder="Doctor Name">
+
+      <label>Status</label>
+      <select id="doctorStatus">
+        <option value="Available">Available</option>
+        <option value="Unavailable">Unavailable</option>
+      </select>
+
+      <button class="btn primary" onclick="saveDoctor()">Save</button>
+    </div>
+
+    <!-- MEDICAL STORE -->
+    <div class="box">
+      <h3>💊 Medical Store</h3>
+
+      <label>Medicine Name</label>
+      <input type="text" id="medicineName" placeholder="Medicine name">
+
+      <label>Status</label>
+      <select id="medicineStatus">
+        <option value="In Stock">In Stock</option>
+        <option value="Out of Stock">Out of Stock</option>
+      </select>
+
+      <button class="btn primary" onclick="updateMedicine()">Update</button>
+    </div>
+
+  </section>
+
+</main>
+
+<footer class="footer">
+  Staff Panel – Hospital System
+</footer>
+
+<!-- FIREBASE LOGIC -->
+<script type="module">
+  import { auth, db } from "../firebase/firebase.js";
+  import { signOut } from
+    "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+  import { doc, setDoc, serverTimestamp } from
+    "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+  window.logout = async () => {
+    await signOut(auth);
+    window.location.href = "../login.html";
+  };
+
+  window.updateBeds = async () => {
+    await setDoc(doc(db, "beds", "current"), {
+      icu: Number(document.getElementById("icu").value),
+      general: Number(document.getElementById("general").value),
+      oxygen: Number(document.getElementById("oxygen").value),
+      updatedAt: serverTimestamp()
+    });
+    alert("Beds updated successfully");
+  };
+
+  window.saveDoctor = async () => {
+    const name = document.getElementById("doctorName").value;
+    const status = document.getElementById("doctorStatus").value;
+
+    if (!name) return alert("Enter doctor name");
+
+    await setDoc(doc(db, "doctors", name), {
+      name,
+      status,
+      updatedAt: serverTimestamp()
+    });
+
+    alert("Doctor saved");
+  };
+
+  window.updateMedicine = async () => {
+    const name = document.getElementById("medicineName").value;
+    const status = document.getElementById("medicineStatus").value;
+
+    if (!name) return alert("Enter medicine name");
+
+    await setDoc(doc(db, "medical", name), {
+      name,
+      status,
+      updatedAt: serverTimestamp()
+    });
+
+    alert("Medicine updated");
+  };
+</script>
+
+</body>
+</html>

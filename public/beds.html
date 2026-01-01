@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hospital Bed Availability</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <h2>🏥 Current Bed Availability</h2>
+  <span class="live-badge">● LIVE</span>
+</header>
+
+<section class="notice">
+  ⚠️ Availability updates in real-time. Please contact hospital before arrival.
+</section>
+
+<section class="grid">
+
+  <div class="card">
+    <h3>ICU Beds</h3>
+    <div class="number" id="icuBeds">--</div>
+    <div class="status" id="icuStatus">Checking...</div>
+    <div class="progress">
+      <div class="bar" id="icuBar"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>General Beds</h3>
+    <div class="number" id="generalBeds">--</div>
+    <div class="status" id="generalStatus">Checking...</div>
+    <div class="progress">
+      <div class="bar" id="generalBar"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Oxygen Beds</h3>
+    <div class="number" id="oxygenBeds">--</div>
+    <div class="status" id="oxygenStatus">Checking...</div>
+    <div class="progress">
+      <div class="bar" id="oxygenBar"></div>
+    </div>
+  </div>
+
+</section>
+
+<section class="update-time">
+  Last Updated: <span id="updatedAt">--</span>
+</section>
+
+<footer class="footer">
+  <p>📞 Emergency: <strong>108</strong></p>
+  <p>📧 support@hospital.com</p>
+  <p>© 2026 Hospital Availability System</p>
+</footer>
+
+<script type="module">
+  import { db } from "../firebase/firebase.js";
+  import { doc, onSnapshot } from
+    "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+  const ref = doc(db, "beds", "current");
+
+  function setUI(count, numberEl, statusEl, barEl) {
+    numberEl.innerText = count;
+
+    let percent = Math.min((count / 200) * 100, 100);
+    barEl.style.width = percent + "%";
+
+    if (count >= 50) {
+      statusEl.innerText = "Available";
+      statusEl.className = "status green";
+      barEl.style.background = "#2ecc71";
+    } else if (count >= 20) {
+      statusEl.innerText = "Limited";
+      statusEl.className = "status orange";
+      barEl.style.background = "#f39c12";
+    } else {
+      statusEl.innerText = "Critical";
+      statusEl.className = "status red";
+      barEl.style.background = "#e74c3c";
+    }
+  }
+
+  onSnapshot(ref, (snap) => {
+    if (!snap.exists()) return;
+
+    const d = snap.data();
+
+    setUI(d.icu,
+      icuBeds, icuStatus, icuBar
+    );
+    setUI(d.general,
+      generalBeds, generalStatus, generalBar
+    );
+    setUI(d.oxygen,
+      oxygenBeds, oxygenStatus, oxygenBar
+    );
+
+    if (d.updatedAt) {
+      document.getElementById("updatedAt").innerText =
+        d.updatedAt.toDate().toLocaleString();
+    }
+  });
+</script>
+
+</body>
+</html>

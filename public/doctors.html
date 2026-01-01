@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Doctors Availability</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="topbar">
+  <h2>👨‍⚕️ Available Doctors</h2>
+  <span class="live-badge">● LIVE</span>
+</header>
+
+<!-- NOTICE -->
+<div class="notice">
+  Doctor availability is updated in real time by hospital staff.
+</div>
+
+<!-- DOCTORS GRID -->
+<section class="grid" id="doctorList"></section>
+
+<!-- FOOTER -->
+<footer class="main-footer">
+  <div class="footer-content">
+    <div class="footer-item">📞 Emergency: 108</div>
+    <div class="footer-item">📧 support@hospital.com</div>
+    <div class="footer-item">© 2026 Hospital Availability System</div>
+  </div>
+</footer>
+
+<!-- FIREBASE -->
+<script type="module">
+  import { db } from "../firebase/firebase.js";
+  import { collection, onSnapshot }
+    from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+  const container = document.getElementById("doctorList");
+
+  onSnapshot(collection(db, "doctors"), (snapshot) => {
+    container.innerHTML = "";
+
+    snapshot.forEach(doc => {
+      const d = doc.data();
+      const statusClass = d.status === "Available" ? "green" : "red";
+
+      container.innerHTML += `
+        <div class="card">
+          <h3>${d.name}</h3>
+          <p><strong>Specialization:</strong> ${d.specialization}</p>
+          <p><strong>Contact:</strong> ${d.phone}</p>
+          <p class="status ${statusClass}">${d.status}</p>
+        </div>
+      `;
+    });
+
+    if (snapshot.empty) {
+      container.innerHTML = "<p style='padding:20px'>No doctors available</p>";
+    }
+  });
+</script>
+
+</body>
+</html>
