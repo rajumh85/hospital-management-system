@@ -4,14 +4,21 @@
   <meta charset="UTF-8" />
   <title>Admin Dashboard</title>
 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: "Segoe UI", sans-serif;
       background: #f4f7fb;
+      color: #0f172a;
     }
 
-    /* Top Bar */
+    /* ================= TOP BAR ================= */
     .topbar {
       background: linear-gradient(90deg, #1fa2ff, #12d8fa);
       color: white;
@@ -24,6 +31,7 @@
     .topbar h2 {
       margin: 0;
       font-weight: 600;
+      font-size: 20px;
     }
 
     .logout {
@@ -33,58 +41,73 @@
       border-radius: 20px;
       text-decoration: none;
       font-weight: 600;
+      transition: 0.2s ease;
     }
 
-    /* Layout */
+    .logout:hover {
+      opacity: 0.85;
+    }
+
+    /* ================= CONTAINER ================= */
     .container {
-      padding: 30px;
+      max-width: 1200px;
+      margin: auto;
+      padding: 30px 20px;
     }
 
+    /* ================= HERO ================= */
     .hero {
       background: white;
-      padding: 40px;
+      padding: 40px 30px;
       border-radius: 20px;
       text-align: center;
       box-shadow: 0 15px 40px rgba(0,0,0,0.08);
-      margin-bottom: 30px;
+      margin-bottom: 35px;
     }
 
     .hero h1 {
       margin: 0;
-      font-size: 32px;
-      color: #0f172a;
+      font-size: 30px;
     }
 
     .hero p {
       margin-top: 10px;
       color: #64748b;
-      font-size: 16px;
+      font-size: 15px;
     }
 
-    /* Cards */
+    /* ================= GRID ================= */
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 25px;
+      align-items: stretch;
     }
 
+    /* ================= CARD ================= */
     .card {
       background: white;
       padding: 25px;
       border-radius: 18px;
       box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .card h3 {
       margin-top: 0;
-      color: #0f172a;
+      margin-bottom: 5px;
+      font-size: 20px;
     }
 
     .card p {
       color: #64748b;
       font-size: 14px;
+      margin-bottom: 15px;
     }
 
+    /* ================= FORM ================= */
     input {
       width: 100%;
       padding: 12px;
@@ -92,6 +115,11 @@
       border-radius: 10px;
       border: 1px solid #d1d5db;
       font-size: 14px;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #1fa2ff;
     }
 
     button {
@@ -115,18 +143,42 @@
       margin-top: 15px;
       text-align: center;
       font-weight: 600;
+      min-height: 20px;
     }
 
-    /* Info cards */
+    /* ================= INFO ================= */
     .info {
       display: flex;
       justify-content: space-between;
-      margin-top: 10px;
+      padding: 8px 0;
       font-size: 14px;
       color: #475569;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .info:last-child {
+      border-bottom: none;
+    }
+
+    /* ================= MOBILE ================= */
+    @media (max-width: 600px) {
+      .hero {
+        padding: 30px 20px;
+      }
+
+      .hero h1 {
+        font-size: 24px;
+      }
+
+      .topbar {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+      }
     }
   </style>
 </head>
+
 <body>
 
   <!-- TOP BAR -->
@@ -148,55 +200,51 @@
 
       <!-- CREATE STAFF -->
       <div class="card">
-        <h3>👤 Create Staff Account</h3>
-        <p>Only admins can create staff login credentials.</p>
+        <div>
+          <h3>👤 Create Staff Account</h3>
+          <p>Only admins can create staff login credentials.</p>
 
-        <form id="createStaffForm">
-          <input
-            type="email"
-            id="staffEmail"
-            placeholder="Staff Email Address"
-            required
-          />
+          <form id="createStaffForm">
+            <input type="email" id="staffEmail" placeholder="Staff Email Address" required />
+            <input type="password" id="staffPassword" placeholder="Temporary Password" required />
+            <button type="submit">Create Staff</button>
+          </form>
 
-          <input
-            type="password"
-            id="staffPassword"
-            placeholder="Temporary Password"
-            required
-          />
-
-          <button type="submit">Create Staff</button>
-        </form>
-
-        <div id="msg"></div>
+          <div id="msg"></div>
+        </div>
       </div>
 
-      <!-- INFO / STATS -->
+      <!-- SYSTEM INFO -->
       <div class="card">
-        <h3>📊 System Info</h3>
-        <div class="info">
-          <span>Authentication</span>
-          <strong>Firebase Auth</strong>
-        </div>
-        <div class="info">
-          <span>Database</span>
-          <strong>Cloud Firestore</strong>
-        </div>
-        <div class="info">
-          <span>Security</span>
-          <strong>Role Based</strong>
-        </div>
-        <div class="info">
-          <span>Status</span>
-          <strong style="color:green;">Active</strong>
+        <div>
+          <h3>📊 System Info</h3>
+
+          <div class="info">
+            <span>Authentication</span>
+            <strong>Firebase Auth</strong>
+          </div>
+
+          <div class="info">
+            <span>Database</span>
+            <strong>Cloud Firestore</strong>
+          </div>
+
+          <div class="info">
+            <span>Security</span>
+            <strong>Role Based</strong>
+          </div>
+
+          <div class="info">
+            <span>Status</span>
+            <strong style="color: green;">Active</strong>
+          </div>
         </div>
       </div>
 
     </div>
   </div>
 
-  <!-- 🔥 FIREBASE (DO NOT CHANGE LOGIC) -->
+  <!-- 🔥 FIREBASE (UNCHANGED) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
@@ -228,16 +276,11 @@
       msg.innerText = "Creating staff account...";
 
       try {
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
-
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const uid = userCredential.user.uid;
 
         await setDoc(doc(db, "users", uid), {
-          email: email,
+          email,
           role: "staff",
           createdAt: new Date()
         });
