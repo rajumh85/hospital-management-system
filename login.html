@@ -14,10 +14,10 @@
       margin: 0;
       font-family: "Segoe UI", sans-serif;
       background: #f4f7fb;
-      color: #0f172a;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      color: #0f172a;
     }
 
     /* ================= TOPBAR ================= */
@@ -72,8 +72,7 @@
       text-align: center;
       color: #64748b;
       font-size: 14px;
-      margin-top: 6px;
-      margin-bottom: 25px;
+      margin: 6px 0 25px;
     }
 
     /* ================= ERROR ================= */
@@ -85,6 +84,7 @@
       font-size: 14px;
       margin-bottom: 18px;
       text-align: center;
+      display: none;
     }
 
     /* ================= FORM ================= */
@@ -100,16 +100,14 @@
       margin-bottom: 6px;
     }
 
-    input,
-    select {
+    input {
       padding: 12px;
       border-radius: 10px;
       border: 1px solid #d1d5db;
       font-size: 14px;
     }
 
-    input:focus,
-    select:focus {
+    input:focus {
       outline: none;
       border-color: #1fa2ff;
     }
@@ -132,44 +130,6 @@
       opacity: 0.9;
     }
 
-    /* ================= DIVIDER ================= */
-    .divider {
-      text-align: center;
-      margin: 20px 0;
-      position: relative;
-    }
-
-    .divider span {
-      background: white;
-      padding: 0 12px;
-      color: #64748b;
-      font-size: 12px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .divider::before {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: #e5e7eb;
-    }
-
-    .small-text {
-      text-align: center;
-      font-size: 13px;
-      color: #475569;
-    }
-
-    .small-text a {
-      color: #1fa2ff;
-      font-weight: 600;
-      text-decoration: none;
-    }
-
     /* ================= FOOTER ================= */
     .footer {
       text-align: center;
@@ -178,10 +138,9 @@
       color: #64748b;
     }
 
-    /* ================= MOBILE ================= */
     @media (max-width: 480px) {
       .auth-card {
-        padding: 30px 22px;
+        padding: 28px 22px;
       }
 
       .auth-card h1 {
@@ -193,29 +152,21 @@
 
 <body>
 
+<!-- ================= TOPBAR ================= -->
 <header class="topbar">
   <div class="logo">🏥 Hospital Management</div>
   <a href="index.html" class="login-btn">Home</a>
 </header>
 
+<!-- ================= LOGIN ================= -->
 <main class="auth-page">
   <div class="auth-card">
     <h1>Staff & Admin Login</h1>
     <p class="auth-subtitle">Authorized hospital personnel only</p>
 
-    <div id="errorBox" class="error-box" style="display:none;"></div>
+    <div id="errorBox" class="error-box"></div>
 
     <form onsubmit="event.preventDefault(); login();">
-
-      <div class="input-group">
-        <label>Role</label>
-        <select id="role">
-          <option value="">Select Role</option>
-          <option value="staff">Staff</option>
-          <option value="admin">Admin</option>
-        </select>
-      </div>
-
       <div class="input-group">
         <label>Email Address</label>
         <input type="email" id="email" placeholder="example@hospital.com" />
@@ -227,13 +178,6 @@
       </div>
 
       <button type="submit" class="auth-btn">Login</button>
-
-      <div class="divider"><span>OR</span></div>
-
-      <p class="small-text">
-        Don’t have an account?
-        <a href="registration.html">Register here</a>
-      </p>
     </form>
   </div>
 </main>
@@ -242,43 +186,63 @@
   © 2026 Hospital Availability & Services Tracker
 </footer>
 
-<!-- 🔥 FIREBASE LOGIN LOGIC (UNCHANGED) -->
+<!-- ================= FIREBASE LOGIN LOGIC ================= -->
 <script type="module">
-  import { auth } from "./firebase/firebase.js";
-  import { signInWithEmailAndPassword } from
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword } from
     "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc } from
+    "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCix2LJGtOHoqGefym3gbEcijOYxRPr2tc",
+    authDomain: "hospital-management-c7f9e.firebaseapp.com",
+    projectId: "hospital-management-c7f9e",
+    storageBucket: "hospital-management-c7f9e.appspot.com",
+    messagingSenderId: "110644104032",
+    appId: "1:110644104032:web:9900751fc9f1c04d6d2c05"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
   window.login = async function () {
-    const role = document.getElementById("role").value;
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
     const errorBox = document.getElementById("errorBox");
 
     errorBox.style.display = "none";
-    email.style.borderColor = "";
-    password.style.borderColor = "";
 
-    if (!role || !email || !password) {
+    if (!email || !password) {
       showError("⚠️ Please fill all fields.");
       return;
     }
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      window.location.href =
-        role === "admin"
-          ? "admin/dashboard.html"
-          : "staff/dashboard.html";
-    } catch (err) {
-      if (err.code === "auth/user-not-found") {
-        showError("❌ Email not found. Please register first.");
-        email.style.borderColor = "#ef4444";
-      } else if (err.code === "auth/wrong-password") {
-        showError("❌ Invalid password. Please try again.");
-        password.style.borderColor = "#ef4444";
-      } else {
-        showError("❌ Login failed. Please try again.");
+      const userCredential =
+        await signInWithEmailAndPassword(auth, email, password);
+
+      const uid = userCredential.user.uid;
+      const userSnap = await getDoc(doc(db, "users", uid));
+
+      if (!userSnap.exists()) {
+        showError("❌ User role not found.");
+        return;
       }
+
+      const role = userSnap.data().role;
+
+      if (role === "admin") {
+        window.location.href = "admin/dashboard.html";
+      } else if (role === "staff") {
+        window.location.href = "staff/dashboard.html";
+      } else {
+        showError("❌ Unauthorized role.");
+      }
+
+    } catch (err) {
+      showError("❌ Invalid email or password.");
     }
   };
 
