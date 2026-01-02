@@ -18,10 +18,9 @@
       color: #0f172a;
     }
 
-    /* TOP BAR */
     .topbar {
       background: linear-gradient(90deg, #1fa2ff, #12d8fa);
-      color: #fff;
+      color: white;
       padding: 16px 30px;
       display: flex;
       justify-content: space-between;
@@ -39,7 +38,6 @@
       font-weight: 600;
     }
 
-    /* LOGIN CARD */
     .auth-page {
       flex: 1;
       display: flex;
@@ -57,13 +55,13 @@
       box-shadow: 0 20px 45px rgba(0,0,0,0.1);
     }
 
-    .auth-card h1 {
+    h1 {
       text-align: center;
       margin: 0;
       font-size: 26px;
     }
 
-    .auth-subtitle {
+    .subtitle {
       text-align: center;
       color: #64748b;
       font-size: 14px;
@@ -100,12 +98,7 @@
       font-size: 14px;
     }
 
-    input:focus {
-      outline: none;
-      border-color: #1fa2ff;
-    }
-
-    .auth-btn {
+    .btn {
       width: 100%;
       padding: 12px;
       background: linear-gradient(90deg, #ff7a18, #ff9f43);
@@ -118,7 +111,7 @@
       margin-top: 10px;
     }
 
-    .footer {
+    footer {
       text-align: center;
       padding: 15px;
       font-size: 13px;
@@ -137,31 +130,31 @@
 <main class="auth-page">
   <div class="auth-card">
     <h1>Staff & Admin Login</h1>
-    <p class="auth-subtitle">Authorized hospital personnel only</p>
+    <p class="subtitle">Authorized hospital personnel only</p>
 
     <div id="errorBox" class="error-box"></div>
 
     <form onsubmit="event.preventDefault(); login();">
       <div class="input-group">
-        <label>Email Address</label>
-        <input type="email" id="email" placeholder="example@hospital.com" />
+        <label>Email</label>
+        <input type="email" id="email" />
       </div>
 
       <div class="input-group">
         <label>Password</label>
-        <input type="password" id="password" placeholder="Enter password" />
+        <input type="password" id="password" />
       </div>
 
-      <button type="submit" class="auth-btn">Login</button>
+      <button class="btn">Login</button>
     </form>
   </div>
 </main>
 
-<footer class="footer">
+<footer>
   © 2026 Hospital Availability & Services Tracker
 </footer>
 
-<!-- ================= FIREBASE LOGIN LOGIC ================= -->
+<!-- ================= FIREBASE LOGIC ================= -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword } from
@@ -183,7 +176,7 @@
   const db = getFirestore(app);
 
   window.login = async function () {
-    const email = document.getElementById("email").value.trim();
+    const email = emailInput.value = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
     const errorBox = document.getElementById("errorBox");
 
@@ -195,31 +188,38 @@
     }
 
     try {
-      // AUTH
-      const userCredential =
-        await signInWithEmailAndPassword(auth, email, password);
+      // 🔐 AUTH
+      const cred = await signInWithEmailAndPassword(auth, email, password);
+      const uid = cred.user.uid;
 
-      const uid = userCredential.user.uid;
+      console.log("AUTH UID:", uid);
 
-      // FIRESTORE ROLE
+      // 📄 FIRESTORE (FORCE CREATE IF MISSING)
       const userRef = doc(db, "users", uid);
       const snap = await getDoc(userRef);
 
       let role;
 
       if (!snap.exists()) {
-        // fallback so login never fails
-        role = "staff";
+        console.warn("Firestore doc missing. Creating one...");
+        role = "staff"; // default
         await setDoc(userRef, {
           email,
           role,
           createdAt: new Date()
         });
       } else {
-        role = snap.data().role;
+        const data = snap.data();
+        role = data.role;
+
+        if (!role) {
+          throw new Error("Role field missing in Firestore");
+        }
       }
 
-      // REDIRECT (SAME DESTINATIONS)
+      console.log("USER ROLE:", role);
+
+      // 🚀 REDIRECT
       if (role === "admin") {
         window.location.href = "admin/dashboard.html";
       } else {
@@ -227,15 +227,15 @@
       }
 
     } catch (err) {
-      showError("❌ Invalid email or password.");
       console.error(err);
+      showError("❌ Login failed. Check email, password, or role.");
     }
   };
 
-  function showError(message) {
-    const errorBox = document.getElementById("errorBox");
-    errorBox.innerText = message;
-    errorBox.style.display = "block";
+  function showError(msg) {
+    const box = document.getElementById("errorBox");
+    box.innerText = msg;
+    box.style.display = "block";
   }
 </script>
 
