@@ -3,48 +3,208 @@
 <head>
   <meta charset="UTF-8">
   <title>Hospital Bed Availability</title>
-  <link rel="stylesheet" href="../assets/css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: #f4f7fb;
+      color: #0f172a;
+    }
+
+    /* ================= TOP BAR ================= */
+    .topbar {
+      background: linear-gradient(90deg, #1fa2ff, #12d8fa);
+      color: white;
+      padding: 16px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topbar h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .back-btn {
+      background: white;
+      color: #1fa2ff;
+      padding: 8px 18px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .back-btn:hover {
+      background: #eaf6ff;
+    }
+
+    /* ================= NOTICE ================= */
+    .notice {
+      background: #fff4e5;
+      color: #92400e;
+      padding: 14px 20px;
+      margin: 20px auto;
+      border-left: 5px solid #f59e0b;
+      max-width: 1100px;
+      border-radius: 8px;
+    }
+
+    /* ================= SUMMARY ================= */
+    .summary {
+      max-width: 1100px;
+      margin: 0 auto 20px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .summary-card {
+      background: white;
+      padding: 20px;
+      border-radius: 18px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    .summary-card h4 {
+      margin: 0;
+      font-size: 14px;
+      color: #64748b;
+    }
+
+    .summary-card span {
+      display: block;
+      margin-top: 8px;
+      font-size: 26px;
+      font-weight: 700;
+    }
+
+    /* ================= GRID ================= */
+    .grid {
+      max-width: 1100px;
+      margin: auto;
+      padding: 10px 20px 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .card h3 {
+      margin-top: 0;
+      font-size: 20px;
+    }
+
+    .number {
+      font-size: 48px;
+      font-weight: 700;
+      margin: 10px 0;
+    }
+
+    .status {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .status.green { color: #16a34a; }
+    .status.orange { color: #f59e0b; }
+    .status.red { color: #dc2626; }
+
+    .progress {
+      background: #e5e7eb;
+      height: 10px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .bar {
+      height: 100%;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    .update-time {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 14px;
+      color: #475569;
+    }
+
+    .footer {
+      background: #38bdf8;
+      color: white;
+      text-align: center;
+      padding: 18px;
+      font-size: 13px;
+    }
+  </style>
 </head>
+
 <body>
 
+<!-- TOP BAR -->
 <header class="topbar">
   <h2>🏥 Current Bed Availability</h2>
-  <span class="live-badge">● LIVE</span>
+  <a href="dashboard.html" class="back-btn">⬅ Back</a>
 </header>
 
 <section class="notice">
   ⚠️ Availability updates in real-time. Please contact hospital before arrival.
 </section>
 
-<section class="grid">
+<!-- SUMMARY SECTION -->
+<section class="summary">
+  <div class="summary-card">
+    <h4>Total ICU Beds</h4>
+    <span id="icuSummary">--</span>
+  </div>
+  <div class="summary-card">
+    <h4>Total General Beds</h4>
+    <span id="generalSummary">--</span>
+  </div>
+  <div class="summary-card">
+    <h4>Total Oxygen Beds</h4>
+    <span id="oxygenSummary">--</span>
+  </div>
+</section>
 
+<!-- MAIN GRID -->
+<section class="grid">
   <div class="card">
     <h3>ICU Beds</h3>
     <div class="number" id="icuBeds">--</div>
     <div class="status" id="icuStatus">Checking...</div>
-    <div class="progress">
-      <div class="bar" id="icuBar"></div>
-    </div>
+    <div class="progress"><div class="bar" id="icuBar"></div></div>
   </div>
 
   <div class="card">
     <h3>General Beds</h3>
     <div class="number" id="generalBeds">--</div>
     <div class="status" id="generalStatus">Checking...</div>
-    <div class="progress">
-      <div class="bar" id="generalBar"></div>
-    </div>
+    <div class="progress"><div class="bar" id="generalBar"></div></div>
   </div>
 
   <div class="card">
     <h3>Oxygen Beds</h3>
     <div class="number" id="oxygenBeds">--</div>
     <div class="status" id="oxygenStatus">Checking...</div>
-    <div class="progress">
-      <div class="bar" id="oxygenBar"></div>
-    </div>
+    <div class="progress"><div class="bar" id="oxygenBar"></div></div>
   </div>
-
 </section>
 
 <section class="update-time">
@@ -57,52 +217,74 @@
   <p>© 2026 Hospital Availability System</p>
 </footer>
 
+<!-- FIREBASE LOGIC (UNCHANGED) -->
 <script type="module">
-  import { db } from "../firebase/firebase.js";
-  import { doc, onSnapshot } from
-    "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+  import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCix2LJGtOHoqGefym3gbEcijOYxRPr2tc",
+    authDomain: "hospital-management-c7f9e.firebaseapp.com",
+    projectId: "hospital-management-c7f9e",
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
   const ref = doc(db, "beds", "current");
 
-  function setUI(count, numberEl, statusEl, barEl) {
-    numberEl.innerText = count;
+  const icuBeds = document.getElementById("icuBeds");
+  const generalBeds = document.getElementById("generalBeds");
+  const oxygenBeds = document.getElementById("oxygenBeds");
 
-    let percent = Math.min((count / 200) * 100, 100);
-    barEl.style.width = percent + "%";
+  const icuStatus = document.getElementById("icuStatus");
+  const generalStatus = document.getElementById("generalStatus");
+  const oxygenStatus = document.getElementById("oxygenStatus");
+
+  const icuBar = document.getElementById("icuBar");
+  const generalBar = document.getElementById("generalBar");
+  const oxygenBar = document.getElementById("oxygenBar");
+
+  const icuSummary = document.getElementById("icuSummary");
+  const generalSummary = document.getElementById("generalSummary");
+  const oxygenSummary = document.getElementById("oxygenSummary");
+
+  const updatedAtEl = document.getElementById("updatedAt");
+
+  function setUI(count, num, status, bar) {
+    num.innerText = count;
+    const percent = Math.min((count / 200) * 100, 100);
+    bar.style.width = percent + "%";
 
     if (count >= 50) {
-      statusEl.innerText = "Available";
-      statusEl.className = "status green";
-      barEl.style.background = "#2ecc71";
+      status.innerText = "Available";
+      status.className = "status green";
+      bar.style.background = "#16a34a";
     } else if (count >= 20) {
-      statusEl.innerText = "Limited";
-      statusEl.className = "status orange";
-      barEl.style.background = "#f39c12";
+      status.innerText = "Limited";
+      status.className = "status orange";
+      bar.style.background = "#f59e0b";
     } else {
-      statusEl.innerText = "Critical";
-      statusEl.className = "status red";
-      barEl.style.background = "#e74c3c";
+      status.innerText = "Critical";
+      status.className = "status red";
+      bar.style.background = "#dc2626";
     }
   }
 
   onSnapshot(ref, (snap) => {
     if (!snap.exists()) return;
-
     const d = snap.data();
 
-    setUI(d.icu,
-      icuBeds, icuStatus, icuBar
-    );
-    setUI(d.general,
-      generalBeds, generalStatus, generalBar
-    );
-    setUI(d.oxygen,
-      oxygenBeds, oxygenStatus, oxygenBar
-    );
+    setUI(d.icu, icuBeds, icuStatus, icuBar);
+    setUI(d.general, generalBeds, generalStatus, generalBar);
+    setUI(d.oxygen, oxygenBeds, oxygenStatus, oxygenBar);
+
+    icuSummary.innerText = d.icu;
+    generalSummary.innerText = d.general;
+    oxygenSummary.innerText = d.oxygen;
 
     if (d.updatedAt) {
-      document.getElementById("updatedAt").innerText =
-        d.updatedAt.toDate().toLocaleString();
+      updatedAtEl.innerText = d.updatedAt.toDate().toLocaleString();
     }
   });
 </script>
