@@ -112,6 +112,25 @@
       border-color: #1fa2ff;
     }
 
+    /* ================= ROLE SELECT ================= */
+    .role-select {
+      display: flex;
+      gap: 20px;
+      margin-top: 6px;
+    }
+
+    .role-option {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .role-option input {
+      accent-color: #1fa2ff;
+    }
+
     /* ================= BUTTON ================= */
     .auth-btn {
       width: 100%;
@@ -167,11 +186,27 @@
     <div id="errorBox" class="error-box"></div>
 
     <form onsubmit="event.preventDefault(); login();">
+
+      <!-- ROLE SELECTION -->
+      <div class="input-group">
+        <label>Select Role</label>
+        <div class="role-select">
+          <label class="role-option">
+            <input type="radio" name="role" value="admin"> Admin
+          </label>
+          <label class="role-option">
+            <input type="radio" name="role" value="staff"> Staff
+          </label>
+        </div>
+      </div>
+
+      <!-- EMAIL -->
       <div class="input-group">
         <label>Email Address</label>
         <input type="email" id="email" placeholder="example@hospital.com" />
       </div>
 
+      <!-- PASSWORD -->
       <div class="input-group">
         <label>Password</label>
         <input type="password" id="password" placeholder="Enter password" />
@@ -186,7 +221,7 @@
   © 2026 Hospital Availability & Services Tracker
 </footer>
 
-<!-- ================= FIREBASE LOGIN LOGIC ================= -->
+<!-- ================= FIREBASE ================= -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword } from
@@ -212,7 +247,15 @@
     const password = document.getElementById("password").value.trim();
     const errorBox = document.getElementById("errorBox");
 
+    const selectedRole =
+      document.querySelector('input[name="role"]:checked')?.value;
+
     errorBox.style.display = "none";
+
+    if (!selectedRole) {
+      showError("⚠️ Please select Admin or Staff.");
+      return;
+    }
 
     if (!email || !password) {
       showError("⚠️ Please fill all fields.");
@@ -233,12 +276,15 @@
 
       const role = userSnap.data().role;
 
+      if (role !== selectedRole) {
+        showError("❌ Selected role does not match your account.");
+        return;
+      }
+
       if (role === "admin") {
         window.location.href = "admin/dashboard.html";
       } else if (role === "staff") {
         window.location.href = "staff/dashboard.html";
-      } else {
-        showError("❌ Unauthorized role.");
       }
 
     } catch (err) {
