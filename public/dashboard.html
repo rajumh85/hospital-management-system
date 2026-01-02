@@ -5,88 +5,221 @@
   <title>Hospital Availability Overview</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Main CSS -->
-  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: #f4f7fb;
+      color: #0f172a;
+    }
+
+    /* ================= TOP BAR ================= */
+    .topbar {
+      background: linear-gradient(90deg, #1fa2ff, #12d8fa);
+      padding: 16px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+
+    .logo {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .login-btn {
+      background: white;
+      color: #1fa2ff;
+      padding: 8px 22px;
+      border-radius: 22px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      transition: 0.2s ease;
+    }
+
+    .login-btn:hover {
+      background: #eaf6ff;
+    }
+
+    /* ================= MAIN ================= */
+    .main {
+      max-width: 1100px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+
+    /* ================= HERO ================= */
+    .hero {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 22px;
+      text-align: center;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+      margin-bottom: 40px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .hero p {
+      margin-top: 10px;
+      font-size: 15px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    /* ================= FEATURE GRID ================= */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+    }
+
+    .box {
+      background: white;
+      padding: 28px;
+      border-radius: 22px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.25s ease;
+    }
+
+    .box:hover {
+      transform: translateY(-4px);
+    }
+
+    .box h3 {
+      margin-top: 0;
+      font-size: 20px;
+    }
+
+    .box p {
+      font-size: 14px;
+      color: #64748b;
+      margin: 12px 0 22px;
+      line-height: 1.6;
+    }
+
+    /* ================= BUTTON ================= */
+    .btn.primary {
+      align-self: flex-start;
+      padding: 12px 24px;
+      background: linear-gradient(90deg, #ff8a3d, #ff6f1e);
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      border-radius: 25px;
+      box-shadow: 0 8px 20px rgba(255, 122, 24, 0.35);
+      transition: all 0.25s ease;
+    }
+
+    .btn.primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(255, 122, 24, 0.45);
+      opacity: 0.95;
+    }
+
+    /* ================= FOOTER ================= */
+    .footer {
+      margin-top: 50px;
+      text-align: center;
+      font-size: 13px;
+      color: #64748b;
+      padding: 20px;
+    }
+
+    /* ================= MOBILE ================= */
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 24px;
+      }
+
+      .btn.primary {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-  <!-- TOP BAR -->
-  <header class="topbar">
-    <div class="logo">🏥 Hospital Availability Overview</div>
-    <a href="../index.html" class="login-btn">Home</a>
-  </header>
+<!-- TOP BAR -->
+<header class="topbar">
+  <div class="logo">🏥 Hospital Availability Overview</div>
+  <a href="../index.html" class="login-btn">Home</a>
+</header>
 
-  <!-- MAIN -->
-  <main class="main">
+<!-- MAIN -->
+<main class="main">
 
-    <!-- HERO -->
-    <section class="hero">
-      <h1>Hospital Availability Overview</h1>
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Hospital Availability Overview</h1>
+    <p>
+      View real-time bed availability, doctors, medical store services,
+      and emergency support from one place.
+    </p>
+  </section>
+
+  <!-- FEATURE BOXES -->
+  <section class="features">
+
+    <div class="box">
+      <h3>🛏️ Bed Availability</h3>
       <p>
-        View real-time bed availability, doctors, medical store services,
-        and emergency support from one place.
+        Check ICU, General, and Oxygen bed availability
+        before visiting the hospital.
       </p>
-    </section>
+      <a href="beds.html" class="btn primary">Check Bed Availability</a>
+    </div>
 
-    <!-- DASHBOARD CARDS -->
-    <section class="features">
+    <div class="box">
+      <h3>👨‍⚕️ Doctors</h3>
+      <p>
+        View available doctors, their specializations,
+        and consultation availability.
+      </p>
+      <a href="doctors.html" class="btn primary">View Doctors</a>
+    </div>
 
-      <!-- BED AVAILABILITY -->
-      <div class="box">
-        <h3>🛏️ Bed Availability</h3>
-        <p>
-          Check ICU, General, and Oxygen bed availability before visiting
-          the hospital.
-        </p>
-        <a href="beds.html" class="btn primary">
-          Check Bed Availability
-        </a>
-      </div>
+    <div class="box">
+      <h3>💊 Medical Store</h3>
+      <p>
+        Check availability of essential medicines
+        and emergency medical supplies.
+      </p>
+      <a href="medical.html" class="btn primary">View Medical Store</a>
+    </div>
 
-      <!-- DOCTORS -->
-      <div class="box">
-        <h3>👨‍⚕️ Doctors</h3>
-        <p>
-          View available doctors, their specializations,
-          and consultation availability.
-        </p>
-        <a href="doctors.html" class="btn primary">
-          View Doctors
-        </a>
-      </div>
+    <div class="box">
+      <h3>🚑 Emergency</h3>
+      <p>
+        Access emergency contacts, ambulance services,
+        and urgent care information.
+      </p>
+      <a href="emergency.html" class="btn primary">Emergency Information</a>
+    </div>
 
-      <!-- MEDICAL STORE -->
-      <div class="box">
-        <h3>💊 Medical Store</h3>
-        <p>
-          Check availability of essential medicines
-          and emergency medical supplies.
-        </p>
-        <a href="medical.html" class="btn primary">
-          View Medical Store
-        </a>
-      </div>
+  </section>
 
-      <!-- EMERGENCY -->
-      <div class="box">
-        <h3>🚑 Emergency</h3>
-        <p>
-          Access emergency contacts, ambulance services,
-          and urgent care information.
-        </p>
-        <a href="emergency.html" class="btn primary">
-          Emergency Information
-        </a>
-      </div>
+</main>
 
-    </section>
-
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="footer">
-    © 2026 Hospital Availability & Services Tracker
-  </footer>
+<!-- FOOTER -->
+<footer class="footer">
+  © 2026 Hospital Availability & Services Tracker
+</footer>
 
 </body>
 </html>
