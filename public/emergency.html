@@ -4,15 +4,127 @@
   <meta charset="UTF-8">
   <title>Emergency Services</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: #f4f7fb;
+      color: #0f172a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ================= HEADER ================= */
+    .topbar {
+      background: linear-gradient(90deg, #22c1f1, #38bdf8);
+      color: white;
+      padding: 16px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .back-btn {
+      background: white;
+      color: #0284c7;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .back-btn:hover {
+      background: #e0f2fe;
+    }
+
+    /* ================= MAIN ================= */
+    .main {
+      max-width: 1100px;
+      margin: auto;
+      padding: 40px 20px;
+      width: 100%;
+    }
+
+    /* ================= HERO ================= */
+    .hero {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+      margin-bottom: 40px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .hero p {
+      margin-top: 10px;
+      font-size: 15px;
+      color: #64748b;
+    }
+
+    /* ================= FEATURES ================= */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+    }
+
+    .box {
+      background: white;
+      padding: 28px;
+      border-radius: 18px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .box h3 {
+      margin-top: 0;
+      font-size: 18px;
+    }
+
+    .box p {
+      font-size: 15px;
+      color: #475569;
+      margin-top: 10px;
+    }
+
+    /* ================= FOOTER ================= */
+    .footer {
+      margin-top: auto;
+      background: #38bdf8;
+      color: white;
+      text-align: center;
+      padding: 22px 20px;
+      font-size: 14px;
+    }
+  </style>
 </head>
+
 <body>
 
+<!-- HEADER -->
 <header class="topbar">
   <div class="logo">🚑 Emergency</div>
-  <a href="dashboard.html" class="login-btn">Back</a>
+  <a href="../index.html" class="back-btn">⬅ Back</a>
 </header>
 
+<!-- MAIN CONTENT -->
 <main class="main">
 
   <section class="hero">
@@ -23,17 +135,17 @@
   <section class="features">
 
     <div class="box">
-      <h3>Ambulance Service</h3>
+      <h3>🚑 Ambulance Service</h3>
       <p>Available 24×7</p>
     </div>
 
     <div class="box">
-      <h3>Emergency Number</h3>
+      <h3>📞 Emergency Number</h3>
       <p><strong>108</strong></p>
     </div>
 
     <div class="box">
-      <h3>Hospital Helpdesk</h3>
+      <h3>🏥 Hospital Helpdesk</h3>
       <p>+91 98765 43210</p>
     </div>
 
@@ -41,6 +153,7 @@
 
 </main>
 
+<!-- FOOTER -->
 <footer class="footer">
   © 2026 Hospital Availability & Services Tracker
 </footer>
