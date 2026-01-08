@@ -3,14 +3,164 @@
 <head>
   <meta charset="UTF-8">
   <title>Doctors Availability</title>
-  <link rel="stylesheet" href="../assets/css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: #f4f7fb;
+      color: #0f172a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ================= HEADER ================= */
+    .topbar {
+      background: linear-gradient(90deg, #22c1f1, #38bdf8);
+      color: white;
+      padding: 16px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topbar h2 {
+      margin: 0;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .live-badge {
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(255,255,255,0.2);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .back-btn {
+      background: white;
+      color: #0284c7;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .back-btn:hover {
+      background: #e0f2fe;
+    }
+
+    /* ================= NOTICE ================= */
+    .notice {
+      background: #fff7ed;
+      color: #92400e;
+      padding: 14px 20px;
+      border-left: 4px solid #fb923c;
+      margin: 20px auto;
+      max-width: 1100px;
+      border-radius: 8px;
+    }
+
+    /* ================= GRID ================= */
+    .grid {
+      max-width: 1100px;
+      margin: 0 auto 40px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    /* ================= CARD ================= */
+    .card {
+      background: white;
+      padding: 22px;
+      border-radius: 18px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .card p {
+      margin: 6px 0;
+      font-size: 14px;
+      color: #475569;
+    }
+
+    .status {
+      margin-top: 10px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .status.green {
+      color: #16a34a;
+    }
+
+    .status.red {
+      color: #dc2626;
+    }
+
+    .updated {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    /* ================= FOOTER ================= */
+    .main-footer {
+      margin-top: auto;
+      background: #38bdf8;
+      color: white;
+      padding: 24px 20px;
+    }
+
+    .footer-content {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-align: center;
+      font-size: 14px;
+    }
+  </style>
 </head>
+
 <body>
 
 <!-- HEADER -->
 <header class="topbar">
-  <h2>👨‍⚕️ Available Doctors</h2>
-  <span class="live-badge">● LIVE</span>
+  <h2>👨‍⚕️ Doctors Availability</h2>
+
+  <div class="top-actions">
+    <span class="live-badge">● LIVE</span>
+    <a href="../index.html" class="back-btn">⬅ Back</a>
+  </div>
 </header>
 
 <!-- NOTICE -->
@@ -24,40 +174,63 @@
 <!-- FOOTER -->
 <footer class="main-footer">
   <div class="footer-content">
-    <div class="footer-item">📞 Emergency: 108</div>
-    <div class="footer-item">📧 support@hospital.com</div>
-    <div class="footer-item">© 2026 Hospital Availability System</div>
+    <div>📞 Emergency: <strong>108</strong></div>
+    <div>📧 support@hospital.com</div>
+    <div>© 2026 Hospital Availability System</div>
   </div>
 </footer>
 
-<!-- FIREBASE -->
+<!-- 🔥 FIREBASE -->
 <script type="module">
-  import { db } from "../firebase/firebase.js";
-  import { collection, onSnapshot }
-    from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+  import {
+    getFirestore,
+    collection,
+    onSnapshot
+  } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCix2LJGtOHoqGefym3gbEcijOYxRPr2tc",
+    authDomain: "hospital-management-c7f9e.firebaseapp.com",
+    projectId: "hospital-management-c7f9e"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
   const container = document.getElementById("doctorList");
 
   onSnapshot(collection(db, "doctors"), (snapshot) => {
     container.innerHTML = "";
 
-    snapshot.forEach(doc => {
-      const d = doc.data();
+    if (snapshot.empty) {
+      container.innerHTML =
+        "<p style='padding:20px'>No doctors available</p>";
+      return;
+    }
+
+    snapshot.forEach(docSnap => {
+      const d = docSnap.data();
       const statusClass = d.status === "Available" ? "green" : "red";
+
+      const updatedTime = d.updatedAt?.toDate
+        ? d.updatedAt.toDate().toLocaleString()
+        : "N/A";
 
       container.innerHTML += `
         <div class="card">
-          <h3>${d.name}</h3>
-          <p><strong>Specialization:</strong> ${d.specialization}</p>
-          <p><strong>Contact:</strong> ${d.phone}</p>
-          <p class="status ${statusClass}">${d.status}</p>
+          <h3>👨‍⚕️ ${d.name || "Doctor"}</h3>
+          <p><strong>Specialization:</strong> ${d.specialization || "N/A"}</p>
+          <p><strong>Phone:</strong> ${d.phone || "N/A"}</p>
+          <p class="status ${statusClass}">
+            ${d.status || "Unknown"}
+          </p>
+          <p class="updated">
+            Last updated: ${updatedTime}
+          </p>
         </div>
       `;
     });
-
-    if (snapshot.empty) {
-      container.innerHTML = "<p style='padding:20px'>No doctors available</p>";
-    }
   });
 </script>
 
