@@ -2,15 +2,159 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Medical Store</title>
-  <link rel="stylesheet" href="../assets/css/style.css">
+  <title>Medical Store Availability</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: #f4f7fb;
+      color: #0f172a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ================= HEADER ================= */
+    .topbar {
+      background: linear-gradient(90deg, #22c1f1, #38bdf8);
+      color: white;
+      padding: 16px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topbar h2 {
+      margin: 0;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .live-badge {
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(255,255,255,0.2);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .back-btn {
+      background: white;
+      color: #0284c7;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .back-btn:hover {
+      background: #e0f2fe;
+    }
+
+    /* ================= NOTICE ================= */
+    .notice {
+      background: #fff7ed;
+      color: #92400e;
+      padding: 14px 20px;
+      border-left: 4px solid #fb923c;
+      margin: 20px auto;
+      max-width: 1100px;
+      border-radius: 8px;
+    }
+
+    /* ================= GRID ================= */
+    .grid {
+      max-width: 1100px;
+      margin: 0 auto 40px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    /* ================= CARD ================= */
+    .card {
+      background: white;
+      padding: 22px;
+      border-radius: 18px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .card p {
+      margin: 6px 0;
+      font-size: 14px;
+      color: #475569;
+    }
+
+    .status {
+      margin-top: 10px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .status.green {
+      color: #16a34a;
+    }
+
+    .status.red {
+      color: #dc2626;
+    }
+
+    /* ================= FOOTER ================= */
+    .main-footer {
+      margin-top: auto;
+      background: #38bdf8;
+      color: white;
+      padding: 24px 20px;
+    }
+
+    .footer-content {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-align: center;
+      font-size: 14px;
+    }
+  </style>
 </head>
+
 <body>
 
 <!-- HEADER -->
 <header class="topbar">
   <h2>💊 Medical Store Availability</h2>
-  <span class="live-badge">● LIVE</span>
+
+  <div class="top-actions">
+    <span class="live-badge">● LIVE</span>
+    <a href="../index.html" class="back-btn">⬅ Back</a>
+  </div>
 </header>
 
 <!-- NOTICE -->
@@ -24,13 +168,13 @@
 <!-- FOOTER -->
 <footer class="main-footer">
   <div class="footer-content">
-    <div class="footer-item">📞 Emergency: 108</div>
-    <div class="footer-item">📧 support@hospital.com</div>
-    <div class="footer-item">© 2026 Hospital Availability System</div>
+    <div>📞 Emergency: <strong>108</strong></div>
+    <div>📧 support@hospital.com</div>
+    <div>© 2026 Hospital Availability System</div>
   </div>
 </footer>
 
-<!-- FIREBASE -->
+<!-- 🔥 FIREBASE -->
 <script type="module">
   import { db } from "../firebase/firebase.js";
   import { collection, onSnapshot }
@@ -41,22 +185,26 @@
   onSnapshot(collection(db, "medicalStore"), (snapshot) => {
     container.innerHTML = "";
 
-    snapshot.forEach(doc => {
-      const m = doc.data();
+    if (snapshot.empty) {
+      container.innerHTML =
+        "<p style='padding:20px'>No medicines listed</p>";
+      return;
+    }
+
+    snapshot.forEach(docSnap => {
+      const m = docSnap.data();
       const statusClass = m.status === "In Stock" ? "green" : "red";
 
       container.innerHTML += `
         <div class="card">
-          <h3>${m.medicine}</h3>
-          <p><strong>Quantity:</strong> ${m.quantity}</p>
-          <p class="status ${statusClass}">${m.status}</p>
+          <h3>${m.medicine || "Medicine"}</h3>
+          <p><strong>Quantity:</strong> ${m.quantity ?? 0}</p>
+          <p class="status ${statusClass}">
+            ${m.status || "Unknown"}
+          </p>
         </div>
       `;
     });
-
-    if (snapshot.empty) {
-      container.innerHTML = "<p style='padding:20px'>No medicines listed</p>";
-    }
   });
 </script>
 
