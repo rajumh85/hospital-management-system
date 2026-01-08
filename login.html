@@ -6,7 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -17,6 +19,7 @@
       flex-direction: column;
     }
 
+    /* ================= TOP BAR ================= */
     .topbar {
       background: linear-gradient(90deg, #1fa2ff, #12d8fa);
       color: white;
@@ -26,8 +29,26 @@
       align-items: center;
     }
 
-    .logo { font-weight: 600; }
+    .logo {
+      font-weight: 600;
+      font-size: 18px;
+    }
 
+    .back-btn {
+      background: white;
+      color: #1fa2ff;
+      padding: 8px 18px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .back-btn:hover {
+      background: #eaf6ff;
+    }
+
+    /* ================= AUTH PAGE ================= */
     .auth-page {
       flex: 1;
       display: flex;
@@ -45,7 +66,11 @@
       box-shadow: 0 20px 45px rgba(0,0,0,0.1);
     }
 
-    h1 { text-align: center; margin: 0; }
+    h1 {
+      text-align: center;
+      margin: 0;
+    }
+
     .subtitle {
       text-align: center;
       color: #64748b;
@@ -68,6 +93,7 @@
       display: flex;
       justify-content: space-around;
       margin-bottom: 18px;
+      font-size: 14px;
     }
 
     .input-group {
@@ -95,6 +121,7 @@
       margin-top: 10px;
     }
 
+    /* ================= FOOTER ================= */
     footer {
       text-align: center;
       padding: 15px;
@@ -106,10 +133,13 @@
 
 <body>
 
+<!-- HEADER -->
 <header class="topbar">
   <div class="logo">🏥 Hospital Management</div>
+  <a href="index.html" class="back-btn">⬅ Back</a>
 </header>
 
+<!-- LOGIN CARD -->
 <main class="auth-page">
   <div class="auth-card">
     <h1>Staff & Admin Login</h1>
@@ -122,21 +152,21 @@
       <!-- ROLE SELECTION -->
       <div class="role-box">
         <label>
-          <input type="radio" name="role" value="admin" />
+          <input type="radio" name="role" value="admin">
           Admin
         </label>
         <label>
-          <input type="radio" name="role" value="staff" />
+          <input type="radio" name="role" value="staff">
           Staff
         </label>
       </div>
 
       <div class="input-group">
-        <input type="email" id="email" placeholder="Email address" />
+        <input type="email" id="email" placeholder="Email address">
       </div>
 
       <div class="input-group">
-        <input type="password" id="password" placeholder="Password" />
+        <input type="password" id="password" placeholder="Password">
       </div>
 
       <button class="btn">Login</button>
@@ -144,6 +174,7 @@
   </div>
 </main>
 
+<!-- FOOTER -->
 <footer>
   © 2026 Hospital Availability & Services Tracker
 </footer>
@@ -151,8 +182,10 @@
 <!-- ================= FIREBASE LOGIN ================= -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword } from
-    "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+  import {
+    getAuth,
+    signInWithEmailAndPassword
+  } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCix2LJGtOHoqGefym3gbEcijOYxRPr2tc",
@@ -182,7 +215,7 @@
     try {
       await signInWithEmailAndPassword(auth, email, password);
 
-      // 🔁 ROLE-BASED REDIRECT (AS REQUESTED)
+      // ROLE-BASED REDIRECT
       if (role.value === "admin") {
         window.location.href = "admin/dashboard.html";
       } else {
