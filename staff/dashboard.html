@@ -6,9 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -17,7 +15,6 @@
       color: #0f172a;
     }
 
-    /* ================= TOP BAR ================= */
     .topbar {
       background: linear-gradient(90deg, #1fa2ff, #12d8fa);
       padding: 14px 30px;
@@ -41,21 +38,14 @@
       font-weight: 600;
       border-radius: 20px;
       cursor: pointer;
-      transition: 0.2s ease;
     }
 
-    .login-btn:hover {
-      background: #fff4ec;
-    }
-
-    /* ================= MAIN ================= */
     .main {
       max-width: 1100px;
       margin: auto;
       padding: 30px 20px;
     }
 
-    /* ================= HERO ================= */
     .hero {
       background: white;
       padding: 40px 30px;
@@ -65,18 +55,6 @@
       margin-bottom: 35px;
     }
 
-    .hero h1 {
-      margin: 0;
-      font-size: 28px;
-    }
-
-    .hero p {
-      margin-top: 8px;
-      color: #64748b;
-      font-size: 15px;
-    }
-
-    /* ================= FEATURES ================= */
     .features {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -90,21 +68,14 @@
       box-shadow: 0 12px 30px rgba(0,0,0,0.08);
     }
 
-    .box h3 {
-      margin-top: 0;
-      margin-bottom: 18px;
-      font-size: 18px;
-    }
-
     label {
       font-size: 13px;
-      color: #475569;
-      margin-top: 10px;
+      margin-top: 12px;
       display: block;
+      color: #475569;
     }
 
-    input,
-    select {
+    input, select {
       width: 100%;
       padding: 12px;
       margin-top: 6px;
@@ -113,69 +84,29 @@
       font-size: 14px;
     }
 
-    input:focus,
-    select:focus {
-      outline: none;
-      border-color: #1fa2ff;
-    }
-
-    /* ================= BUTTONS ================= */
     .btn.primary {
       width: 100%;
-      max-width: 420px;
-      margin: 20px auto 0;
-      padding: 14px 0;
+      margin-top: 18px;
+      padding: 14px;
       background: linear-gradient(90deg, #ff8a3d, #ff6f1e);
       border: none;
       color: white;
-      font-size: 15px;
       font-weight: 600;
       border-radius: 14px;
       cursor: pointer;
-      display: block;
-      box-shadow: 0 8px 20px rgba(255, 122, 24, 0.35);
-      transition: all 0.25s ease;
     }
 
-    .btn.primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 28px rgba(255, 122, 24, 0.45);
-      opacity: 0.95;
-    }
-
-    .btn.primary:active {
-      transform: scale(0.98);
-    }
-
-    /* ================= FOOTER ================= */
     .footer {
       text-align: center;
       padding: 20px;
       font-size: 13px;
       color: #64748b;
     }
-
-    /* ================= MOBILE ================= */
-    @media (max-width: 600px) {
-      .hero {
-        padding: 30px 20px;
-      }
-
-      .hero h1 {
-        font-size: 24px;
-      }
-
-      .btn.primary {
-        max-width: 100%;
-        font-size: 14px;
-      }
-    }
   </style>
 </head>
 
 <body>
 
-<!-- TOP BAR -->
 <header class="topbar">
   <div class="logo">🏥 Staff Dashboard</div>
   <button class="login-btn" onclick="logout()">Logout</button>
@@ -183,37 +114,41 @@
 
 <main class="main">
 
-  <!-- HERO -->
   <section class="hero">
     <h1>Manage Hospital Data</h1>
-    <p>Update beds, doctors availability, and medical store status.</p>
+    <p>Update beds, doctors availability, and medical store stock.</p>
   </section>
 
-  <!-- DASHBOARD CARDS -->
   <section class="features">
 
-    <!-- BED UPDATE -->
+    <!-- BEDS -->
     <div class="box">
-      <h3>🛏️ Update Bed Availability</h3>
+      <h3>🛏️ Bed Availability</h3>
 
       <label>ICU Beds</label>
-      <input type="number" id="icu" placeholder="e.g. 5">
+      <input type="number" id="icu">
 
       <label>General Beds</label>
-      <input type="number" id="general" placeholder="e.g. 20">
+      <input type="number" id="general">
 
       <label>Oxygen Beds</label>
-      <input type="number" id="oxygen" placeholder="e.g. 10">
+      <input type="number" id="oxygen">
 
-      <button class="btn primary" onclick="updateBeds()">Update</button>
+      <button class="btn primary" onclick="updateBeds()">Update Beds</button>
     </div>
 
     <!-- DOCTORS -->
     <div class="box">
-      <h3>👨‍⚕️ Doctor Availability</h3>
+      <h3>👨‍⚕️ Doctors</h3>
 
       <label>Doctor Name</label>
-      <input type="text" id="doctorName" placeholder="Doctor Name">
+      <input type="text" id="doctorName">
+
+      <label>Phone</label>
+      <input type="text" id="doctorPhone">
+
+      <label>Specialization</label>
+      <input type="text" id="doctorSpecialization">
 
       <label>Status</label>
       <select id="doctorStatus">
@@ -221,7 +156,7 @@
         <option value="Unavailable">Unavailable</option>
       </select>
 
-      <button class="btn primary" onclick="saveDoctor()">Save</button>
+      <button class="btn primary" onclick="saveDoctor()">Save Doctor</button>
     </div>
 
     <!-- MEDICAL STORE -->
@@ -229,7 +164,10 @@
       <h3>💊 Medical Store</h3>
 
       <label>Medicine Name</label>
-      <input type="text" id="medicineName" placeholder="Medicine name">
+      <input type="text" id="medicineName">
+
+      <label>Quantity</label>
+      <input type="number" id="medicineQuantity">
 
       <label>Status</label>
       <select id="medicineStatus">
@@ -237,7 +175,7 @@
         <option value="Out of Stock">Out of Stock</option>
       </select>
 
-      <button class="btn primary" onclick="updateMedicine()">Update</button>
+      <button class="btn primary" onclick="updateMedicine()">Update Medicine</button>
     </div>
 
   </section>
@@ -247,57 +185,112 @@
   Staff Panel – Hospital System
 </footer>
 
-<!-- ================= FIREBASE LOGIC (UNCHANGED) ================= -->
+<!-- 🔥 FIREBASE LOGIC (FULLY FIXED) -->
 <script type="module">
   import { auth, db } from "../firebase/firebase.js";
-  import { signOut } from
-    "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
-  import { doc, setDoc, serverTimestamp } from
-    "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+  import {
+    signOut,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 
+  import {
+    doc,
+    setDoc,
+    serverTimestamp,
+    collection,
+    addDoc
+  } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+  /* ================= AUTH GUARD ================= */
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      alert("Please login first");
+      window.location.href = "../login.html";
+    }
+  });
+
+  /* ================= LOGOUT ================= */
   window.logout = async () => {
     await signOut(auth);
     window.location.href = "../login.html";
   };
 
+  /* ================= BEDS ================= */
   window.updateBeds = async () => {
-    await setDoc(doc(db, "beds", "current"), {
-      icu: Number(document.getElementById("icu").value),
-      general: Number(document.getElementById("general").value),
-      oxygen: Number(document.getElementById("oxygen").value),
-      updatedAt: serverTimestamp()
-    });
-    alert("Beds updated successfully");
+    try {
+      await setDoc(doc(db, "beds", "current"), {
+        icu: Number(document.getElementById("icu").value),
+        general: Number(document.getElementById("general").value),
+        oxygen: Number(document.getElementById("oxygen").value),
+        updatedAt: serverTimestamp()
+      });
+      alert("✅ Beds updated successfully");
+    } catch (e) {
+      console.error(e);
+      alert("❌ Failed to update beds");
+    }
   };
 
+  /* ================= DOCTORS ================= */
   window.saveDoctor = async () => {
     const name = document.getElementById("doctorName").value;
+    const phone = document.getElementById("doctorPhone").value;
+    const specialization = document.getElementById("doctorSpecialization").value;
     const status = document.getElementById("doctorStatus").value;
 
-    if (!name) return alert("Enter doctor name");
+    if (!name || !phone || !specialization) {
+      alert("Fill all doctor details");
+      return;
+    }
 
-    await setDoc(doc(db, "doctors", name), {
-      name,
-      status,
-      updatedAt: serverTimestamp()
-    });
-
-    alert("Doctor saved");
+    try {
+      await addDoc(collection(db, "doctors"), {
+        name,
+        phone,
+        specialization,
+        status,
+        updatedAt: serverTimestamp()
+      });
+      alert("✅ Doctor saved successfully");
+    } catch (e) {
+      console.error(e);
+      alert("❌ Failed to save doctor");
+    }
   };
 
+  /* ================= MEDICAL STORE ================= */
   window.updateMedicine = async () => {
-    const name = document.getElementById("medicineName").value;
+    const medicine = document.getElementById("medicineName").value.trim();
+    const quantity = Number(document.getElementById("medicineQuantity").value);
     const status = document.getElementById("medicineStatus").value;
 
-    if (!name) return alert("Enter medicine name");
+    if (!medicine || quantity <= 0) {
+      alert("Enter valid medicine name and quantity");
+      return;
+    }
 
-    await setDoc(doc(db, "medical", name), {
-      name,
-      status,
-      updatedAt: serverTimestamp()
-    });
+    try {
+      await setDoc(
+        doc(db, "medicalStore", medicine),
+        {
+          medicine,
+          quantity,
+          status,
+          updatedAt: serverTimestamp()
+        },
+        { merge: true }
+      );
 
-    alert("Medicine updated");
+      alert("✅ Medicine updated successfully");
+
+      document.getElementById("medicineName").value = "";
+      document.getElementById("medicineQuantity").value = "";
+      document.getElementById("medicineStatus").value = "In Stock";
+
+    } catch (e) {
+      console.error("Firestore error:", e);
+      alert("❌ Failed to update medicine: " + e.message);
+    }
   };
 </script>
 
